@@ -1,0 +1,400 @@
+SQL
+
+
+Date function
+Date Functions Basics:
+
+Date functions use a keyword and parentheses, e.g., NOW().
+Some functions take arguments, while others don’t, e.g., NOW() vs DATEDIFF().
+Current Date and Time:
+
+NOW() retrieves both the current date and time.
+CURDATE() retrieves only the current date.
+Extracting Date or Time:
+
+Use DATE() to extract the date from a date-time field, e.g., DATE(NOW()).
+SQL stores dates as year-month-day, so respect the format when adding records.
+Formatting Dates:
+
+Use DATE_FORMAT(date, format) to display dates in a specific format, e.g., MM/DD/YYYY.
+Use a column alias to make headers look clean when formatting.
+Date Differences and Calculations:
+
+DATEDIFF(date1, date2) returns the difference in days between two dates.
+ADDDATE() adds an interval (day, month, etc.) to a date, e.g., ADDDATE(orderDate, INTERVAL 2 DAY).
+Day and Month Extraction:
+
+Use DAY() and MONTH() to extract the numerical day and month.
+Use DAYNAME() and MONTHNAME() for the actual names of the day or month.
+Applications:
+
+Date functions are useful for mail merges, reports, and email automation.
+Ensure correct formatting when working with date-time data to avoid errors.
+Example:
+
+If you want just the date portion of NOW(), use DATE(NOW()).
+To calculate shipping delays: DATEDIFF(shippedDate, orderDate) will return the number of days between the order and shipment.
+
+
+Here are the key points from the demonstration on the TRIM and SUBSTR functions:
+
+TRIM Functions:
+
+TRIM removes leading and trailing spaces from text fields. Useful for cleaning up data entry errors.
+LTRIM (Left Trim) removes leading spaces (before the text).
+RTRIM (Right Trim) removes trailing spaces (after the text).
+Example: " Shad" is different from "Shad", but TRIM(" Shad") will return "Shad".
+SUBSTR Function:
+
+SUBSTR(field, start_position, length) extracts a portion of a string.
+Useful for extracting parts of strings like phone numbers or ZIP codes.
+Example: SUBSTR("Shad", 1, 3) returns "Sha".
+Importance of Consistency:
+
+Consistent data entry ensures you can extract and format data correctly, such as consistently including country codes in phone numbers.
+The functions are essential for cleaning up text fields and extracting specific portions of data from strings.
+
+
+
+
+
+
+
+Concatenation in SQL joins multiple strings using the CONCAT function, with each string separated by a comma. For example: CONCAT(firstName, ' ', lastName) combines the first and last names with a space. To handle unwanted spaces, use TRIM before concatenating.
+
+The CONCAT_WS function lets you specify a separator between strings, useful for formatting addresses or labels. For example: CONCAT_WS(' ', firstName, lastName).
+
+You can also concatenate special characters like $ for currency formatting: CONCAT('$', ROUND(amount, 2)).
+Functions Overview
+
+Functions perform designated actions and return results.
+Called using the syntax: functionName(argument1, argument2, ...).
+Data Types
+
+Date and Time:
+Formats:
+Dates: YYYY-MM-DD
+Times: HH:MM:SS
+Types: DATE, TIME, DATETIME, TIMESTAMP, YEAR.
+Date Functions
+
+NOW(): Current date and time.
+CURDATE(): Current date.
+DATEDIFF(date1, date2): Difference between two dates (earlier date first for a positive result).
+DATE_FORMAT(date, format): Formats dates based on specified format.
+WEEKDAY(date): Returns day of the week (0 = Monday).
+MONTH(date), DAYNAME(date), MONTHNAME(date), YEAR(date): Extract respective components.
+Distinct and Aggregate Functions
+
+DISTINCT: Eliminates duplicate values.
+Aggregate Functions:
+AVG(): Average value.
+COUNT(expression): Counts non-NULL values; COUNT(*) includes NULLs.
+MAX(), MIN(): Highest and lowest values (ignores NULLs).
+SUM(): Total of numeric values.
+String Functions
+
+Strings enclosed in single quotes; MySQL ignores case.
+Formatting Functions:
+UPPER(), LOWER(): Convert case.
+REPLACE(original, old_value, new_value): Replaces occurrences.
+FORMAT(number, decimal_places): Formats numbers.
+Trimming Functions:
+LTRIM(), RTRIM(), TRIM(): Removes leading, trailing, or both spaces.
+Substring Extraction:
+SUBSTRING(string, start_position, length): Extracts part of a string.
+Concatenation
+
+Use CONCAT(string1, string2, ...) to join strings.
+CONCAT_WS(delimiter, string1, string2, ...) to join with a specified delimiter.
+
+
+
+Summary of UNION in SQL
+UNION Overview:
+
+UNION is used to combine the results of two or more queries into one result set.
+Queries combined using UNION must have:
+The same number of columns.
+Compatible data types for corresponding columns.
+Example:
+
+In a video rental store database, actor and customer tables both contain first and last names.
+By using UNION, we can combine the first and last names from both tables into a single result.
+Key Points:
+
+UNION returns unique records by default.
+To include all records, even duplicates, use UNION ALL.
+UNION is useful for scenarios like merging current and old customers for specific purposes, like mailing lists.
+
+
+Summary of INTERSECT and EXCEPT Operators in SQL
+INTERSECT:
+
+Compares the results of two SELECT statements and returns the rows that are common to both.
+The queries must retrieve the same number of columns with compatible data types.
+Example: If two tables (vips and vips2) contain names, INTERSECT returns names that appear in both tables.
+EXCEPT:
+
+Returns the rows from the first query that do not exist in the second.
+Like INTERSECT, it requires the same number of columns and compatible data types.
+Example: EXCEPT can be used to find names in vips that are not present in vips2.
+Key Points:
+
+INTERSECT: Returns common records between two result sets.
+EXCEPT: Returns records from the first result set that are not in the second.
+Both operators provide unique results, meaning duplicates are automatically removed.
+
+
+Key Points on Joins:
+Joins Overview:
+
+Joins combine data from two or more tables based on a common column or condition.
+Essential for reconstructing flat database-like results from normalized tables.
+Types of Joins:
+
+Cross Join:
+
+Matches every row from the first table with every row from the second.
+Rarely used; creates a result set of all possible combinations.
+Syntax: SELECT * FROM table1 CROSS JOIN table2;
+Inner Join:
+
+Retrieves only records where there is a match between both tables based on the join condition.
+Most commonly used.
+Example: Fetch VIPs with matching addresses:
+sql
+Copy code
+SELECT vip.name, vip_address.address 
+FROM vip 
+INNER JOIN vip_address ON vip.vip_number = vip_address.vip_number;
+Outer Joins:
+
+Left Outer Join:
+Returns all records from the left (first) table and matching records from the right table. If no match, right table columns return NULL.
+Syntax: SELECT * FROM table1 LEFT JOIN table2 ON condition;
+Right Outer Join:
+Returns all records from the right (second) table and matching records from the left table.
+Syntax: SELECT * FROM table1 RIGHT JOIN table2 ON condition;
+Using Common Columns:
+
+If the fields in the join condition have the same name, you can use the USING clause to simplify the query:
+sql
+Copy code
+SELECT * 
+FROM table1 
+INNER JOIN table2 USING (common_column);
+
+sql
+Copy code
+SELECT customer.first_name, customer.last_name, address.postal_code, city.city
+FROM customer
+INNER JOIN address ON customer.address_id = address.address_id
+INNER JOIN city ON address.city_id = city.city_id;
+Field Ambiguity: If fields exist in more than one table, you must specify the table name (e.g., customer.first_name).
+
+Classic Models Example:
+
+Joining customers, orders, and orderdetails:
+sql
+Copy code
+SELECT customers.customerNumber, customers.customerName, orders.orderNumber, orders.orderDate, orderdetails.quantityOrdered
+FROM customers
+INNER JOIN orders ON customers.customerNumber = orders.customerNumber
+INNER JOIN orderdetails ON orders.orderNumber = orderdetails.orderNumber;
+Summary:
+Multiple Table Joins involve combining data from several tables based on shared keys.
+INNER JOIN retrieves only matching rows from related tables.
+Understanding the relationships (keys) is key to correctly forming the join queries.
+
+
+Key Points on Self Joins:
+Self Join Overview:
+
+A self join is not a different type of join but rather a scenario where a table is joined to itself.
+It allows you to relate records within the same table.
+Table Aliases:
+
+Table aliases make it easier to write and read queries by providing shorter names for tables.
+Essential for self joins since you need to refer to the same table multiple times.
+Example Scenario:
+
+Employees Table: Contains an employee's details and their supervisor's employee number (reportsTo).
+Example Query:
+sql
+Copy code
+SELECT 
+    t1.employee_number,
+    CONCAT(t1.first_name, ' ', t1.last_name) AS employee,
+    CONCAT(t2.first_name, ' ', t2.last_name) AS supervisor
+FROM 
+    employees AS t1
+LEFT JOIN 
+    employees AS t2 ON t1.reportsTo = t2.employee_number
+WHERE 
+    t1.reportsTo IS NOT NULL;
+Results:
+
+This query generates a list of employees along with their respective supervisors by treating the employees table as two separate instances (t1 and t2).
+Conclusion:
+Self joins use the same table twice with aliases to relate fields within that table, enabling the retrieval of hierarchical or related data from a single source.
+
+
+
+
+Key Points on Data Sorting:
+Overview of Data Sorting:
+
+Data sorting organizes query results in a specified order.
+In the Sakila database, initial queries return unsorted results.
+Sorting Syntax:
+
+Use the ORDER BY clause to specify the sorting field.
+Example:
+sql
+Copy code
+SELECT first_name, last_name FROM customer ORDER BY first_name, last_name;
+Sorting Order:
+
+Default order is ascending (A-Z for letters, smallest to largest for numbers).
+To sort in descending order, use DESC:
+sql
+Copy code
+ORDER BY field_name DESC;
+To explicitly indicate ascending order (optional):
+sql
+Copy code
+ORDER BY field_name ASC;
+Custom Sort Order:
+
+For custom sorting, use the FIELD() function.
+Example:
+sql
+Copy code
+SELECT f.title, c.name 
+FROM films f 
+INNER JOIN film_category fc ON f.film_id = fc.film_id 
+INNER JOIN categories c ON fc.category_id = c.category_id 
+ORDER BY FIELD(c.name, 'Action', 'Comedy', 'Foreign', 'New', 'Animation', 'Documentary', 'Games');
+This allows for sorting in a user-defined order.
+Conclusion:
+Data sorting enhances query results with the ORDER BY clause.
+Use ASC for ascending, DESC for descending, or FIELD() for custom orders to meet specific sorting requirements.
+This should provide a clear and concise overview of data sorting based on the demonstration!
+
+
+
+Here’s a more concise summary of limiting results in SQL:
+
+Limiting Results in SQL
+Overview:
+
+MySQL uses LIMIT to fetch a specified number of records (unlike SQL Server's TOP).
+Basic Usage:
+
+Fetch the top N records:
+sql
+Copy code
+SELECT * FROM payment ORDER BY amount DESC LIMIT 10;
+Offset:
+
+Specify starting point:
+sql
+Copy code
+SELECT * FROM payment ORDER BY amount DESC LIMIT 100, 10; 
+Retrieves 10 records starting from the 101st.
+
+
+
+
+
+
+GROUP BY and HAVING Clauses
+GROUP BY:
+
+Used to group rows that share a common value in specified columns.
+Essential for performing aggregate calculations on grouped data.
+Basic Syntax:
+
+sql
+Copy code
+SELECT column_name, COUNT(*) 
+FROM table_name 
+GROUP BY column_name;
+Example: Count films in each store:
+sql
+Copy code
+SELECT store_id, COUNT(film_id) 
+FROM inventory 
+GROUP BY store_id;
+Multiple Grouping:
+
+You can group by multiple columns:
+sql
+Copy code
+SELECT rating, rental_duration, COUNT(*) 
+FROM films 
+GROUP BY rating, rental_duration 
+ORDER BY rating;
+HAVING:
+
+Filters grouped records. Similar to WHERE, but works with aggregate functions.
+Syntax:
+sql
+Copy code
+SELECT column_name, SUM(amount) 
+FROM payments 
+GROUP BY customer_id 
+HAVING SUM(amount) > 120;
+Use HAVING when you need to limit results based on aggregate values.
+Key Points:
+
+Use GROUP BY to aggregate data.
+Use HAVING instead of WHERE to filter aggregated results.
+
+
+
+ROLLUP Operator in SQL
+Purpose:
+
+Produces a hierarchical series of grouping sets, summarizing data at multiple levels.
+How It Works:
+
+The order of grouping columns determines the hierarchy.
+Each grouping level generates a subtotal, with a grand total at the end.
+Example 1: Basic Usage of ROLLUP:
+
+sql
+Copy code
+SELECT rating, special_features, COUNT(*)
+FROM films
+GROUP BY rating, special_features WITH ROLLUP;
+This query counts special features grouped by film ratings. The output includes subtotals for each rating and a grand total.
+Example 2: Changing Grouping Order:
+
+sql
+Copy code
+SELECT special_features, rating, COUNT(*)
+FROM films
+GROUP BY special_features, rating WITH ROLLUP;
+Changing the order of grouping columns affects the number of rows in the output.
+Handling NULLs in Output:
+
+By default, ROLLUP produces NULLs for subtotal rows. Use the GROUPING function to differentiate subtotal rows.
+Example 3: Using GROUPING and IF Functions:
+
+sql
+Copy code
+SELECT 
+    IF(GROUPING(rating) = 1, 'All Ratings', rating) AS Rating,
+    IF(GROUPING(special_features) = 1, 'All Special Features', special_features) AS SF,
+    COUNT(*) AS SF_Count
+FROM films
+GROUP BY rating, special_features WITH ROLLUP;
+This query replaces NULLs with labels like "All Ratings" and "All Special Features" for better readability.
+Key Takeaways:
+
+ROLLUP allows for hierarchical summarization.
+The grouping order impacts output rows.
+Use GROUPING and IF functions to handle NULLs and provide meaningful labels.
+
